@@ -14,20 +14,27 @@ export async function scanLibrary() {
         if (stat.isDirectory()) {
             const files = await fs.readdir(seriesPath);
             const episodes = files
-                .filter((file: string) => file.endsWith('.mp4'))
+                .filter((file: string) => /\.(mp4|avi|mkv|mov|webm)$/i.test(file) && !file.startsWith('._'))
                 .map((file: string) => ({
                     id: path.parse(file).name,
-                    title: path.parse(file).name,
+                    title: path.parse(file).name, 
                     path: `/library/${dir}/${file}`
                 }));
 
+            const firstVideoFile = episodes[0]?.path || '';
+            const thumbnailPath = firstVideoFile.replace(/\.(mp4|avi|mkv|mov|webm)$/i, '.jpg');
+            console.log(`Agregando serie: ${dir}`);
+            console.log(`Número de episodios: ${episodes.length}`);
+            console.log(`Miniatura: ${thumbnailPath}`);
+            console.log(`episodes:`,episodes);
+            
             series.push({
                 id: dir,
                 title: dir,
-                thumbnail: `/library/${dir}/thumbnail.jpg`,
-                description: `Descripción de ${dir}`, // Añadir una descripción
+                thumbnail: thumbnailPath,
+                description: `Descripción de ${dir}`,
                 episodes
-            });
+            }); 
         }
     }
 
