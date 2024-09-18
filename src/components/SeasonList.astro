@@ -2,7 +2,7 @@
 const { seasons, seriesId } = Astro.props;
 ---
 
-<div class="space-y-8">
+<div class="space-y-8 mt-4">
   {seasons.map((season: any) => (
     <div class="bg-gray-800 p-6 rounded-lg">
       <h2 class="text-2xl font-semibold text-white mb-4">{season.title}</h2>

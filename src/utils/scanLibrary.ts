@@ -20,20 +20,48 @@ export async function scanLibrary() {
                     path: `/library/${dir}/${file}`
                 }));
 
+            // Verificar si hay subcarpetas (temporadas)
+            const subDirs = await fs.promises.readdir(seriesPath);
+            const seasons = [];
+
+            for (const subDir of subDirs) {
+                const seasonPath = path.join(seriesPath, subDir);
+                const seasonStat = await fs.promises.stat(seasonPath);
+                
+                if (seasonStat.isDirectory()) {
+                    const seasonFiles = await fs.promises.readdir(seasonPath);
+                    const seasonEpisodes = seasonFiles
+                        .filter((file: string) => /\.(mp4|avi|mkv|mov|webm)$/i.test(file) && !file.startsWith('._'))
+                        .map((file: string) => ({
+                            id: `${dir}_${subDir}_${path.parse(file).name}`,
+                            title: path.parse(file).name,
+                            path: `/library/${dir}/${subDir}/${file}`
+                        }));
+                    
+                    if (seasonEpisodes.length > 0) {
+                        seasons.push({
+                            id: `${dir}_${subDir}`,
+                            title: subDir,
+                            episodes: seasonEpisodes
+                        });
+                    }
+                }
+            }
+
+
             const firstVideoFile = episodes[0]?.path || '';
             const thumbnailPath = firstVideoFile.replace(/\.(mp4|avi|mkv|mov|webm)$/i, '.jpg');
-            console.log(`Agregando serie: ${dir}`);
-            console.log(`Número de episodios: ${episodes.length}`);
-            console.log(`Miniatura: ${thumbnailPath}`);
-            console.log(`episodes:`,episodes);
-            
-            series.push({
+            const serie = {
                 id: dir,
                 title: dir,
                 thumbnail: thumbnailPath,
                 description: `Descripción de ${dir}`,
-                episodes
-            }); 
+                episodes,
+                seasons
+            }
+            console.log(`Agregando serie: `, serie);
+
+            series.push(serie); 
         }
     }
 
