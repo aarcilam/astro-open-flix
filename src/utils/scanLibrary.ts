@@ -1,8 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as config from '../config.json'; // Importar el archivo de configuración
 
 export async function scanLibrary() {
-    const libraryPath = path.join(process.cwd(), 'public', 'library');
+    // Usar la ruta de configuración o la ruta por defecto
+    const libraryPath = config.libraryPath || path.join(process.cwd(), 'public', 'library');
     const series = [];
 
     const dirs = await fs.promises.readdir(libraryPath);
@@ -17,7 +19,7 @@ export async function scanLibrary() {
                 .map((file: string) => ({
                     id: path.parse(file).name,
                     title: path.parse(file).name, 
-                    path: `/library/${dir}/${file}`
+                    path: config.libraryPath ? `${config.libraryPath}/${dir}/${file}` : `/library/${dir}/${file}`
                 }));
 
             // Verificar si hay subcarpetas (temporadas)
@@ -35,7 +37,7 @@ export async function scanLibrary() {
                         .map((file: string) => ({
                             id: `${dir}_${subDir}_${path.parse(file).name}`,
                             title: path.parse(file).name,
-                            path: `/library/${dir}/${subDir}/${file}`
+                            path: config.libraryPath ? `${config.libraryPath}/${dir}/${subDir}/${file}` : `/library/${dir}/${subDir}/${file}`
                         }));
                     
                     if (seasonEpisodes.length > 0) {
