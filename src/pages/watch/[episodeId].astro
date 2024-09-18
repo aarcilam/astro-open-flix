@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+import { scanLibrary } from '../../utils/scanLibrary';
+
+export async function getStaticPaths() {
+  const series = await scanLibrary();
+  return series.flatMap((s) => 
+    s.episodes.map((e: { id: string }) => ({ 
+      params: { episodeId: e.id }, 
+      props: { episode: e, series: s } 
+    }))
+  );
+}
+
+const { episode, series } = Astro.props;
+---
+
+<Layout title={`Ver ${episode.title} - ${series.title}`}>
+  <main class="container mx-auto px-4 py-8">
+    <VideoPlayer videoSrc={episode.path} title={`${series.title} - ${episode.title}`} />
+    <div class="mt-8">
+      <a href={`/${series.id}`} class="text-blue-400 hover:underline">&larr; Volver a la serie</a>
+    </div>
+  </main>
+</Layout>

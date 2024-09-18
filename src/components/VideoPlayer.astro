@@ -1,0 +1,15 @@
+---
+const { videoSrc, title } = Astro.props;
+---
+
+<div class="video-player-container">
+  <h2 class="text-2xl font-bold mb-4">{title}</h2>
+  <video
+    src={videoSrc}
+    class="w-full max-w-4xl mx-auto rounded-lg shadow-lg"
+    controls
+    preload="metadata"
+  >
+    Tu navegador no soporta el elemento de video.
+  </video>
+</div>

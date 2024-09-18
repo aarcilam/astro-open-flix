@@ -1,0 +1,21 @@
+---
+const { seasons, seriesId } = Astro.props;
+---
+
+<div class="space-y-8">
+  {seasons.map((season: any) => (
+    <div class="bg-gray-800 p-6 rounded-lg">
+      <h2 class="text-2xl font-semibold text-white mb-4">{season.title}</h2>
+      <div class="space-y-4">
+        {season.episodes.map((episode: any) => (
+          <div class="bg-gray-700 p-4 rounded-lg">
+            <h3 class="text-xl font-semibold text-white">{episode.title}</h3>
+            <a href={`/watch/${seriesId}/${season.id}/${episode.id}`} class="inline-block mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+              Ver episodio
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
