@@ -16,10 +16,10 @@ const { series } = Astro.props;
   <main class="container mx-auto px-4">
     <h1 class="text-4xl font-bold text-white mb-8">{series.title}</h1>
     <img src={series.thumbnail} alt={series.title} class="w-full max-w-3xl mx-auto mb-8 rounded-lg" />
-    {series.seasons ? (
-      <SeasonList seasons={series.seasons} seriesId={series.id} />
-    ) : (
+    {Array.isArray(series.episodes) ? (
       <EpisodeList episodes={series.episodes} />
+    ) : (
+      <SeasonList seasons={series.episodes} seriesId={series.id} />
     )}
   </main>
 </Layout>

@@ -1,18 +1,17 @@
-import fs from 'fs/promises'; 
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 export async function scanLibrary() {
     const libraryPath = path.join(process.cwd(), 'public', 'library');
     const series = [];
 
-    const dirs = await fs.readdir(libraryPath);
+    const dirs = await fs.promises.readdir(libraryPath);
 
     for (const dir of dirs) {
         const seriesPath = path.join(libraryPath, dir);
-        const stat = await fs.stat(seriesPath);
-
+        const stat = await fs.promises.stat(seriesPath);
         if (stat.isDirectory()) {
-            const files = await fs.readdir(seriesPath);
+            const files = await fs.promises.readdir(seriesPath);
             const episodes = files
                 .filter((file: string) => /\.(mp4|avi|mkv|mov|webm)$/i.test(file) && !file.startsWith('._'))
                 .map((file: string) => ({
