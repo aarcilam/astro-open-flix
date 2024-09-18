@@ -18,9 +18,14 @@ export async function scanLibrary() {
                 .filter((file: string) => /\.(mp4|avi|mkv|mov|webm)$/i.test(file) && !file.startsWith('._'))
                 .map((file: string) => ({
                     id: path.parse(file).name,
-                    title: path.parse(file).name, 
+                    title: path.parse(file).name,
                     path: config.libraryPath ? `${config.libraryPath}/${dir}/${file}` : `/library/${dir}/${file}`
                 }));
+            const imgGallery = files.filter((file: string) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file) && !file.startsWith('._')).map((file: string) => ({
+                id: path.parse(file).name,
+                title: path.parse(file).name,
+                path: config.libraryPath ? `${config.libraryPath}/${dir}/${file}` : `/library/${dir}/${file}`
+            }));
 
             // Verificar si hay subcarpetas (temporadas)
             const subDirs = await fs.promises.readdir(seriesPath);
@@ -29,7 +34,7 @@ export async function scanLibrary() {
             for (const subDir of subDirs) {
                 const seasonPath = path.join(seriesPath, subDir);
                 const seasonStat = await fs.promises.stat(seasonPath);
-                
+
                 if (seasonStat.isDirectory()) {
                     const seasonFiles = await fs.promises.readdir(seasonPath);
                     const seasonEpisodes = seasonFiles
@@ -39,12 +44,19 @@ export async function scanLibrary() {
                             title: path.parse(file).name,
                             path: config.libraryPath ? `${config.libraryPath}/${dir}/${subDir}/${file}` : `/library/${dir}/${subDir}/${file}`
                         }));
-                    
-                    if (seasonEpisodes.length > 0) {
+
+                    const imgSeason = seasonFiles.filter((file: string) => /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(file) && !file.startsWith('._')).map((file: string) => ({
+                        id: path.parse(file).name,
+                        title: path.parse(file).name,
+                        path: config.libraryPath ? `${config.libraryPath}/${dir}/${subDir}/${file}` : `/library/${dir}/${subDir}/${file}`
+                    }));
+
+                    if (seasonEpisodes.length > 0 || imgSeason.length > 0) {
                         seasons.push({
                             id: `${dir}_${subDir}`,
                             title: subDir,
-                            episodes: seasonEpisodes
+                            episodes: seasonEpisodes,
+                            imgGallery: imgSeason
                         });
                     }
                 }
@@ -59,11 +71,12 @@ export async function scanLibrary() {
                 thumbnail: thumbnailPath,
                 description: `Descripción de ${dir}`,
                 episodes,
-                seasons
+                seasons,
+                imgGallery
             }
             console.log(`Agregando serie: `, serie);
 
-            series.push(serie); 
+            series.push(serie);
         }
     }
 
