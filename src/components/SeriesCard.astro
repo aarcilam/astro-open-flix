@@ -4,7 +4,7 @@ const { series } = Astro.props;
 
 <a href={`/${series.id}`} class="block">
   <div class="relative overflow-hidden rounded-lg shadow-lg hover:scale-105 transition-transform duration-300">
-    <img src={series.thumbnail} alt={series.title} class="w-full h-auto" />
+    <img src={series.imgGallery[0].path} alt={series.title} class="w-full h-auto" transition:name={`thumnail-${series.id}`} />
     <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
       <h2 class="text-white text-lg font-semibold">{series.title}</h2>
     </div>

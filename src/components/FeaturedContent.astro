@@ -4,7 +4,7 @@ const { featured } = Astro.props;
 
 <div class="featured-content mb-12">
   <div class="relative h-96 overflow-hidden rounded-lg">
-    <img src={featured.thumbnail} alt={featured.title} class="w-full h-full object-cover" />
+    <img src={featured.imgGallery[0].path} class="w-full h-full object-cover"  />
     <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black to-transparent">
       <h2 class="text-4xl font-bold mb-2">{featured.title}</h2>
       <p class="text-lg mb-4">{featured.description}</p>
