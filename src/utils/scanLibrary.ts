@@ -63,8 +63,7 @@ export async function scanLibrary() {
             }
 
 
-            const firstVideoFile = episodes[0]?.path || '';
-            const thumbnailPath = firstVideoFile.replace(/\.(mp4|avi|mkv|mov|webm)$/i, '.jpg');
+            const thumbnailPath = imgGallery?.[0]?.path;
             const serie = {
                 id: dir,
                 title: dir,
@@ -72,7 +71,8 @@ export async function scanLibrary() {
                 description: `Descripción de ${dir}`,
                 episodes,
                 seasons,
-                imgGallery
+                imgGallery,
+                comeFromApi: false
             }
             console.log(`Agregando serie: `, serie);
 

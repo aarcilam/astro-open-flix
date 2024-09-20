@@ -15,7 +15,7 @@
                     <div v-for="serie in series" :key="serie.id" class="w-full flex-shrink-0">
                         <div class="featured-content mb-12">
                             <div class="relative overflow-hidden rounded-lg" style="height: 500px;">
-                                <img :src="serie.imgGallery[0].path" :alt="serie.title"
+                                <img :src="serie.thumbnail" :alt="serie.title"
                                     class="w-full h-full object-cover" />
                                 <div
                                     class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black to-transparent">

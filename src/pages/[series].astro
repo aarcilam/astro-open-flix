@@ -3,10 +3,12 @@ import Layout from "../layouts/Layout.astro";
 import EpisodeList from "../components/EpisodeList.astro";
 import SeasonList from "../components/SeasonList.astro";
 import { scanLibrary } from "../utils/scanLibrary";
-
+import { scanApi } from "../utils/scanApi";
 export async function getStaticPaths() {
     const series = await scanLibrary();
-    return series.map((s) => ({
+    const apiSeries = await scanApi();
+    const allContent = [...series, ...apiSeries];
+    return allContent.map((s) => ({
         params: { series: s.id },
         props: { series: s },
     }));
@@ -19,7 +21,7 @@ const { series } = Astro.props;
     <main class="container mx-auto px-4">
         <h1 class="text-4xl font-bold text-white mb-8">{series.title}</h1>
         <img
-            src={series.imgGallery[0].path}
+            src={series.thumbnail}
             alt={series.title}
             class="w-full max-w-3xl mx-auto mb-8 rounded-lg"
             transition:name={`thumnail-${series.id}`}

@@ -3,9 +3,11 @@ import Layout from "../layouts/Layout.astro";
 import SeriesCard from "../components/SeriesCard.astro";
 import SeriesSlider from "../components/SeriesSlider.vue";
 import { scanLibrary } from "../utils/scanLibrary";
-
+import { scanApi } from "../utils/scanApi";
 const series = await scanLibrary();
-const featured = series.slice(0, 5);
+const apiSeries = await scanApi();
+const allContent = [...series, ...apiSeries];
+const featured = allContent.slice(0, 5);
 ---
 
 <Layout title="Mi Netflix Clone">
@@ -14,7 +16,7 @@ const featured = series.slice(0, 5);
     <div class="container mx-auto">
       <h2 class="text-3xl font-bold mb-6">Series Populares</h2>
       <div id="seriesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {series.map((serie) => <SeriesCard series={serie} />)}
+        {allContent.map((serie) => <SeriesCard series={serie} />)}
       </div>
     </div>
   </main>
