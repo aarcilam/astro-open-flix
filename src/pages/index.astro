@@ -1,21 +1,21 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import SeriesCard from '../components/SeriesCard.astro';
-import FeaturedContent from '../components/FeaturedContent.astro';
-import { scanLibrary } from '../utils/scanLibrary';
+import Layout from "../layouts/Layout.astro";
+import SeriesCard from "../components/SeriesCard.astro";
+import SeriesSlider from "../components/SeriesSlider.vue";
+import { scanLibrary } from "../utils/scanLibrary";
 
 const series = await scanLibrary();
-const featured = series[0]; // Asumiendo que queremos destacar la primera serie
+const featured = series.slice(0, 5);
 ---
 
 <Layout title="Mi Netflix Clone">
-  <main class="container mx-auto px-4">
-    <FeaturedContent featured={featured} />
-    <h2 class="text-3xl font-bold mb-6">Series Populares</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {series.map((serie) => (
-        <SeriesCard series={serie} />
-      ))}
+  <main class="mx-auto px-4 pt-2">
+    <SeriesSlider client:load series={featured} />
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold mb-6">Series Populares</h2>
+      <div id="seriesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {series.map((serie) => <SeriesCard series={serie} />)}
+      </div>
     </div>
   </main>
 </Layout>
