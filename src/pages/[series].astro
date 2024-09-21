@@ -4,10 +4,13 @@ import EpisodeList from "../components/EpisodeList.astro";
 import SeasonList from "../components/SeasonList.astro";
 import { scanLibrary } from "../utils/scanLibrary";
 import { scanApi } from "../utils/scanApi";
+import { scanDb } from "../utils/scanDb";
+
 export async function getStaticPaths() {
     const series = await scanLibrary();
     const apiSeries = await scanApi();
-    const allContent = [...series, ...apiSeries];
+    const dbSeries:any = await scanDb();
+    const allContent = [...series, ...apiSeries, ...dbSeries];
     return allContent.map((s) => ({
         params: { series: s.id },
         props: { series: s },

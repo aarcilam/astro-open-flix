@@ -5,7 +5,9 @@ import tailwind from '@astrojs/tailwind';
 
 import vue from '@astrojs/vue';
 
+import db from '@astrojs/db';
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), vue()]
+  integrations: [tailwind(), vue(), db()]
 });

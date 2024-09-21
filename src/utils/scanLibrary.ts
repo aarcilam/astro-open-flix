@@ -74,8 +74,6 @@ export async function scanLibrary() {
                 imgGallery,
                 comeFromApi: false
             }
-            console.log(`Agregando serie: `, serie);
-
             series.push(serie);
         }
     }

@@ -4,9 +4,12 @@ import SeriesCard from "../components/SeriesCard.astro";
 import SeriesSlider from "../components/SeriesSlider.vue";
 import { scanLibrary } from "../utils/scanLibrary";
 import { scanApi } from "../utils/scanApi";
+import { scanDb } from "../utils/scanDb";
 const series = await scanLibrary();
 const apiSeries = await scanApi();
-const allContent = [...series, ...apiSeries];
+const dbSeries:any = await scanDb();
+
+const allContent = [...series, ...apiSeries, ...dbSeries];
 const featured = allContent.slice(0, 5);
 ---
 
