@@ -1,0 +1,9 @@
+---
+import CreateMovieComponent from "../components/forms/create-movie.vue";
+import Layout from "../layouts/Layout.astro";
+
+---
+
+<Layout title="Crear Pelicula">
+    <CreateMovieComponent client:only="vue"  />
+</Layout>

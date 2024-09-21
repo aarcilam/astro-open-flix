@@ -5,9 +5,25 @@ import SeriesSlider from "../components/SeriesSlider.vue";
 import { scanLibrary } from "../utils/scanLibrary";
 import { scanApi } from "../utils/scanApi";
 import { scanDb } from "../utils/scanDb";
-const series = await scanLibrary();
-const apiSeries = await scanApi();
-const dbSeries:any = await scanDb();
+import { DbService } from "../utils/dbService";
+let series:any = [];
+let apiSeries:any = [];
+let dbSeries:any = [];
+try {
+  series = await scanLibrary();
+} catch (error) {
+  console.log(error + "Error al escanear la libreria");
+}
+try {
+  apiSeries = await scanApi();
+} catch (error) {
+  console.log(error + "Error al escanear la API");
+}
+try {
+  dbSeries = await scanDb();
+} catch (error) {
+  console.log(error + "Error al escanear la base de datos");
+}
 
 const allContent = [...series, ...apiSeries, ...dbSeries];
 const featured = allContent.slice(0, 5);
